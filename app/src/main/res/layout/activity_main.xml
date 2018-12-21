@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity" android:orientation="vertical" android:gravity="center">
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:gravity="center">
+        <Button
+                android:text="Start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/btnIniciar" android:textSize="12sp"/>
+        <Button
+                android:text="Stop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/btnDetener" android:textSize="12sp"/>
+        <Button
+                android:text="Dibuja"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/btnDibujar" android:textSize="12sp"/>
+        <Button
+                android:text="Borrar DB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/btnBorrar" android:textSize="12sp"/>
+    </LinearLayout>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/layMap">
+
+        <fragment
+                android:id="@+id/FragmentMapa"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:name="com.google.android.gms.maps.SupportMapFragment"/>
+
+    </LinearLayout>
+
+</LinearLayout>
