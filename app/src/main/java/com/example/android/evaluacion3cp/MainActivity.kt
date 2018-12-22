@@ -107,6 +107,27 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
        // if(direccionactual.size>0) {
        //     mapa?.addMarker(MarkerOptions().position(marcador))
 
+        fun comenzarAnotar() {
+            var ubicacion : String = marcador.toString()
+
+            btnIniciar.setOnClickListener {
+                val db = this.writableDatabase
+                mapa?.addMarker(MarkerOptions().position(marcador))
+                fun insertar(ubicacion : String) {
+                    var cv = ContentValues()
+                    cv.put(marcador)
+                    val resultado = db.insert(" lista", null, cv)
+                    db.close()
+                }
+            }
+        }
+
+        fun finalizarAnotar() {
+            btnDetener.setOnClickListener {
+
+            }
+        }
+
       //  }
         fun agregarLocaciones(){
             lista_locaciones.add(direccionactual.toString())
@@ -149,3 +170,4 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
         //se deja vacio
     }
 }
+
