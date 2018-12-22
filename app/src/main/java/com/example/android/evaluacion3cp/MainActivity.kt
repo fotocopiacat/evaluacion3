@@ -1,6 +1,7 @@
 package com.example.android.evaluacion3cp
 
 import android.Manifest
+import android.content.ContentValues
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Geocoder
@@ -11,11 +12,14 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.widget.Toast
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.android.synthetic.main.activity_main.*
+import java.sql.SQLException
 
 class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
 
@@ -24,6 +28,8 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
     var latitud = 0.0
     var longitud = 0.0
     var altitud = 0.0
+    var lista_locaciones = ArrayList<String>()
+    var lm : LocationManager? = null
 
     override fun onMapReady(p0: GoogleMap?) {
         mapa = p0
@@ -46,7 +52,6 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
     }
 
     //se declara un location manager
-    var lm : LocationManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +77,7 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
             ActivityCompat.requestPermissions(this,permisos,1)
         }
         else {
-            lm?.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,1000,1f,this)
+            lm?.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,1f,this)
         }
 
         //fragmento mapa
@@ -82,7 +87,6 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
         fragmentoMapa.getMapAsync(this)
     }
 
-
     override fun onLocationChanged(location: Location?) {
         //se indica que las variables latitd y longitud obtienen sus valores de la locacion
         //obtenida por el servicio de ubicacion
@@ -90,16 +94,28 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
         longitud = location?.longitude.toString().toDouble()
         altitud = location?.altitude.toString().toDouble()
 
+        var lat = location?.latitude
+        var long = location?.longitude
+
+
         var geocoder = Geocoder (this)
         var direccionactual = geocoder.getFromLocation(latitud,longitud, 1)
 
-
         var marcador = LatLng(latitud,longitud)
         mapa?.addMarker(MarkerOptions().position(marcador))
+
+       // if(direccionactual.size>0) {
+       //     mapa?.addMarker(MarkerOptions().position(marcador))
+
+      //  }
+        fun agregarLocaciones(){
+            lista_locaciones.add(direccionactual.toString())
+             mapa?.addMarker(MarkerOptions().position(marcador))
+        }
+        agregarLocaciones();
    }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-
         when (requestCode)
         {
             1->
@@ -112,7 +128,7 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
                 }
                 if (grantResults.size > 0 && granted)
                 {
-                    lm?.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,1000,1f,this)
+                    lm?.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,1f,this)
                 } else
                 {
                     Toast.makeText(this, " permiso de gps requerido", Toast.LENGTH_LONG).show()
@@ -132,10 +148,4 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
     override fun onProviderDisabled(provider: String?) {
         //se deja vacio
     }
-
-
-
-
-
-
 }
