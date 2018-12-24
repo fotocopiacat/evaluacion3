@@ -29,7 +29,7 @@ class CustomSQL (val miContexto: Context,
             var cv = ContentValues()
             cv.put("latitud", latitud)
             cv.put("longitud", longitud)
-            val resultado = db.insert("myDB", null, cv)
+            val resultado = db.insert("ubicaciones", null, cv)
             db.close()
             if (resultado == 1L) {
                 System.out.println("mensaje no agregado")

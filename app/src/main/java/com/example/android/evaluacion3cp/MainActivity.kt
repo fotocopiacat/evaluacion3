@@ -57,6 +57,9 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        var customSQL = CustomSQL(this,"myDB", null, 1)
+
+
         //se inicializa el location manager
         lm = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
@@ -97,8 +100,9 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
         var lat = latitud.toString()
         var long = longitud.toString()
 
-        //var marcador = LatLng(latitud,longitud)
-        //mapa?.addMarker(MarkerOptions().position(marcador))
+        var marcador = LatLng(latitud,longitud)
+        mapa?.addMarker(MarkerOptions().position(marcador))
+        //var customSQL = CustomSQL(this,"myDB", null, 1)
         var customSQL = CustomSQL(this,"myDB", null, 1)
         customSQL.insertar(lat,long)
 
