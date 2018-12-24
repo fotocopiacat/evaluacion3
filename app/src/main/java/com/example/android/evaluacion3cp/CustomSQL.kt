@@ -23,12 +23,12 @@ class CustomSQL (val miContexto: Context,
     }
 
     //se crea una funcion que intentara escribir en la base de datos
-    fun insertar(latitudTxt: String, longitudTxt : String) {
+    fun insertar(latitud: String, longitud : String) {
         try {
             val db = this.writableDatabase
             var cv = ContentValues()
-            cv.put("latitud", latitudTxt)
-            cv.put("longitud", longitudTxt)
+            cv.put("latitud", latitud)
+            cv.put("longitud", longitud)
             val resultado = db.insert("myDB", null, cv)
             db.close()
             if (resultado == 1L) {
