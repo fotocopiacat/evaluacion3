@@ -11,12 +11,15 @@ import android.location.LocationManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
+import android.text.Layout
+import android.view.View
 import android.widget.Toast
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_main.*
 import java.sql.SQLException
@@ -30,6 +33,8 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
     var altitud = 0.0
     var lm : LocationManager? = null
     var isSaving : Boolean = true
+    var isShowing : Boolean = true
+
 
     override fun onMapReady(p0: GoogleMap?) {
         mapa = p0
@@ -89,6 +94,14 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
         // sobreescribir, deja de suceder
         fragmentoMapa.getMapAsync(this)
 
+       // isShowing = true
+
+        btnDibujar.setOnClickListener{
+            isShowing = !isShowing
+
+        }
+
+
         btnDetener.setOnClickListener{
          //   var customSQL = CustomSQL(this,"myDB", null, 1)
          //   customSQL.close()
@@ -99,7 +112,6 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
         btnIniciar.setOnClickListener {
             isSaving = true
         }
-
     }
 
     override fun onLocationChanged(location: Location?) {
@@ -112,12 +124,16 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
         var lat = latitud.toString()
         var long = longitud.toString()
 
+
         if (isSaving == true) {
-            var marcador = LatLng(latitud,longitud)
-            mapa?.addMarker(MarkerOptions().position(marcador))
+           var marcador = LatLng(latitud,longitud)
+            mapa?.addMarker(MarkerOptions()
+                .position(marcador)
+                .visible(isShowing))
             var customSQL = CustomSQL(this,"myDB", null, 1)
             customSQL.insertar(lat,long)
         }
+
 
      }
 
@@ -145,7 +161,7 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
     }
 
     override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-    //se deja vacio
+
     }
 
     override fun onProviderEnabled(provider: String?) {
@@ -156,4 +172,6 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
         //se deja vacio
     }
 }
+
+
 
