@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
     var longitud = 0.0
     var altitud = 0.0
     var lm : LocationManager? = null
+    var isSaving : Boolean = true
 
     override fun onMapReady(p0: GoogleMap?) {
         mapa = p0
@@ -87,6 +88,18 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
         //antes decia THIS con rojo, pro al anadir el listner de mapa (ultimo metodo de main activity_) y
         // sobreescribir, deja de suceder
         fragmentoMapa.getMapAsync(this)
+
+        btnDetener.setOnClickListener{
+         //   var customSQL = CustomSQL(this,"myDB", null, 1)
+         //   customSQL.close()
+           System.out.println("base cerrada")
+            isSaving = false
+        }
+
+        btnIniciar.setOnClickListener {
+            isSaving = true
+        }
+
     }
 
     override fun onLocationChanged(location: Location?) {
@@ -99,25 +112,13 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
         var lat = latitud.toString()
         var long = longitud.toString()
 
-
-        //var customSQL = CustomSQL(this,"myDB", null, 1)
-        //customSQL.insertar(lat,long)
-
-
-
-        btnIniciar.setOnClickListener {
+        if (isSaving == true) {
             var marcador = LatLng(latitud,longitud)
             mapa?.addMarker(MarkerOptions().position(marcador))
             var customSQL = CustomSQL(this,"myDB", null, 1)
             customSQL.insertar(lat,long)
         }
 
-        btnDetener.setOnClickListener{
-            var customSQL = CustomSQL(this,"myDB", null, 1)
-            customSQL.close()
-            System.out.println("base cerrada")
-
-        }
      }
 
 
