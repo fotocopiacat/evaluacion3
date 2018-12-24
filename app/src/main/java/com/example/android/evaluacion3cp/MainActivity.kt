@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
     var altitud = 0.0
     var lista_locaciones = ArrayList<String>()
     var lm : LocationManager? = null
-    var customSQL = CustomSQL(this,"myDB", null, 1)
 
     override fun onMapReady(p0: GoogleMap?) {
         mapa = p0
@@ -95,13 +94,14 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
         longitud = location?.longitude.toString().toDouble()
         altitud = location?.altitude.toString().toDouble()
 
-        var lat = location?.latitude.toString()
-        var long = location?.longitude.toString()
+        var lat = latitud.toString()
+        var long = longitud.toString()
 
         //var marcador = LatLng(latitud,longitud)
         //mapa?.addMarker(MarkerOptions().position(marcador))
-
+        var customSQL = CustomSQL(this,"myDB", null, 1)
         customSQL.insertar(lat,long)
+
        // if(direccionactual.size>0) {
        //     mapa?.addMarker(MarkerOptions().position(marcador))
 

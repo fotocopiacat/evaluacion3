@@ -15,7 +15,7 @@ class CustomSQL (val miContexto: Context,
     version) {
 
     override fun onCreate(db: SQLiteDatabase?) {
-        var query = "CREATE TABLE ubicaciones(id INTEGER PRIMARY KEY AUTOINCREMENT, latitudS TEXT, longitudS TEXT)"
+        var query = "CREATE TABLE Ubicaciones(id INTEGER PRIMARY KEY AUTOINCREMENT, Latitud TEXT, Longitud TEXT)"
         db?.execSQL(query)
     }
 
