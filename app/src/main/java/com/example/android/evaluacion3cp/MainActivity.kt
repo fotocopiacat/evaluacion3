@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
     var altitud = 0.0
     var lista_locaciones = ArrayList<String>()
     var lm : LocationManager? = null
+    var customSQL : CustomSQL = CustomSQL(this,"myDB", null, 1)
 
     override fun onMapReady(p0: GoogleMap?) {
         mapa = p0
@@ -98,28 +99,29 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
         var long = location?.longitude
 
 
-        var geocoder = Geocoder (this)
-        var direccionactual = geocoder.getFromLocation(latitud,longitud, 1)
+  //      var geocoder = Geocoder (this)
+//        var direccionactual = geocoder.getFromLocation(latitud,longitud, 1)
 
         var marcador = LatLng(latitud,longitud)
         mapa?.addMarker(MarkerOptions().position(marcador))
 
+        customSQL.insertar(location?.latitude.toString(),location?.longitude.toString())
        // if(direccionactual.size>0) {
        //     mapa?.addMarker(MarkerOptions().position(marcador))
 
         fun comenzarAnotar() {
-            var ubicacion : String = marcador.toString()
+            /*   var ubicacion : String = marcador.toString()
 
-            btnIniciar.setOnClickListener {
-                val db = this.writableDatabase
-                mapa?.addMarker(MarkerOptions().position(marcador))
-                fun insertar(ubicacion : String) {
-                    var cv = ContentValues()
-                    cv.put(marcador)
-                    val resultado = db.insert(" lista", null, cv)
-                    db.close()
-                }
-            }
+               btnIniciar.setOnClickListener {
+                   val db = this.writableDatabase
+                   mapa?.addMarker(MarkerOptions().position(marcador))
+                   fun insertar(ubicacion : String) {
+                       var cv = ContentValues()
+                       cv.put(marcador)
+                       val resultado = db.insert(" lista", null, cv)
+                       db.close()
+                   }
+               }*/
         }
 
         fun finalizarAnotar() {
@@ -129,11 +131,10 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
         }
 
       //  }
-        fun agregarLocaciones(){
-            lista_locaciones.add(direccionactual.toString())
-             mapa?.addMarker(MarkerOptions().position(marcador))
+        fun guardarLocaciones(){
+
         }
-        agregarLocaciones();
+
    }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

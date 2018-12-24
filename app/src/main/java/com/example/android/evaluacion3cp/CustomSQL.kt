@@ -7,14 +7,15 @@ import android.database.sqlite.SQLiteOpenHelper
 import java.sql.SQLException
 
 class CustomSQL (val miContexto: Context,
-                 var locacion : String,
+                 var nombreDb : String,
                  val factory: SQLiteDatabase.CursorFactory?,
                  var version : Int) : SQLiteOpenHelper(miContexto,
-    locacion,
+    nombreDb,
     factory,
     version) {
+
     override fun onCreate(db: SQLiteDatabase?) {
-        var query = "CREATE TABLE ubicaciones(id INTEGER PRIMARY KEY AUTOINCREMENT, mensaje TEXT)"
+        var query = "CREATE TABLE ubicaciones(id INTEGER PRIMARY KEY AUTOINCREMENT, latitudS TEXT, longitudS TEXT)"
         db?.execSQL(query)
     }
 
@@ -22,12 +23,13 @@ class CustomSQL (val miContexto: Context,
     }
 
     //se crea una funcion que intentara escribir en la base de datos
-    fun insertar(mensaje: String) {
+    fun insertar(latitudTxt: String, longitudTxt : String) {
         try {
             val db = this.writableDatabase
             var cv = ContentValues()
-            cv.put(" mensaje", mensaje)
-            val resultado = db.insert(" lista", null, cv)
+            cv.put("latitud", latitudTxt)
+            cv.put("longitud", longitudTxt)
+            val resultado = db.insert("myDB", null, cv)
             db.close()
             if (resultado == 1L) {
                 System.out.println("mensaje no agregado")
