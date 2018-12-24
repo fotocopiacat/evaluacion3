@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.widget.Toast
 import java.sql.SQLException
 
 class CustomSQL (val miContexto: Context,
@@ -33,14 +34,21 @@ class CustomSQL (val miContexto: Context,
             db.close()
             if (resultado == 1L) {
                 System.out.println("mensaje no agregado")
+                Toast.makeText(miContexto, "Latitud y longitud NO agregados a la DB", Toast.LENGTH_LONG).show()
+
             }
             else {
                 System.out.println("mensaje agregado")
+                Toast.makeText(miContexto, "Latitud y longitud SÍ agregados a la DB", Toast.LENGTH_LONG).show()
+
             }
         } catch (e: SQLException)
         {
             System.out.println("ERROR Al insertar locacion en DB")
+            Toast.makeText(miContexto, "Error al insertar locación. Revise log.", Toast.LENGTH_LONG).show()
         }
     }
+
+
 
 }

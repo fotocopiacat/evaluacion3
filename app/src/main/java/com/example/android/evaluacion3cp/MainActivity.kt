@@ -28,7 +28,6 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
     var latitud = 0.0
     var longitud = 0.0
     var altitud = 0.0
-    var lista_locaciones = ArrayList<String>()
     var lm : LocationManager? = null
 
     override fun onMapReady(p0: GoogleMap?) {
@@ -100,42 +99,27 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
         var lat = latitud.toString()
         var long = longitud.toString()
 
-        var marcador = LatLng(latitud,longitud)
-        mapa?.addMarker(MarkerOptions().position(marcador))
+
         //var customSQL = CustomSQL(this,"myDB", null, 1)
-        var customSQL = CustomSQL(this,"myDB", null, 1)
-        customSQL.insertar(lat,long)
+        //customSQL.insertar(lat,long)
 
-       // if(direccionactual.size>0) {
-       //     mapa?.addMarker(MarkerOptions().position(marcador))
 
-        fun comenzarAnotar() {
-            /*   var ubicacion : String = marcador.toString()
 
-               btnIniciar.setOnClickListener {
-                   val db = this.writableDatabase
-                   mapa?.addMarker(MarkerOptions().position(marcador))
-                   fun insertar(ubicacion : String) {
-                       var cv = ContentValues()
-                       cv.put(marcador)
-                       val resultado = db.insert(" lista", null, cv)
-                       db.close()
-                   }
-               }*/
+        btnIniciar.setOnClickListener {
+            var marcador = LatLng(latitud,longitud)
+            mapa?.addMarker(MarkerOptions().position(marcador))
+            var customSQL = CustomSQL(this,"myDB", null, 1)
+            customSQL.insertar(lat,long)
         }
 
-        fun finalizarAnotar() {
-            btnDetener.setOnClickListener {
-
-            }
-        }
-
-      //  }
-        fun guardarLocaciones(){
+        btnDetener.setOnClickListener{
+            var customSQL = CustomSQL(this,"myDB", null, 1)
+            customSQL.close()
+            System.out.println("base cerrada")
 
         }
+     }
 
-   }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when (requestCode)
