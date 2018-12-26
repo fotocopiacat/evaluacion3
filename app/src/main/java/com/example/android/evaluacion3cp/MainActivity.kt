@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
     var lm : LocationManager? = null
     //Este boolean sirve para saber si la DB está guardando datos o no.
     //lo uso para abrir o cerrar la conexión con la DB
-    var isSaving : Boolean = true
+    var isSaving : Boolean = false
     //Este boolean lo uso para saber si se están mostrando los marcadores o no,
     //así puedo limpiarlos o leerlos de la DB.
     var isShowing : Boolean = true
@@ -98,9 +98,6 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
         //sobreescribir, deja de suceder
         fragmentoMapa.getMapAsync(this)
 
-
-
-
         //Detiene la inserción de datos en la DB
         btnDetener.setOnClickListener{
             isSaving = false
@@ -111,40 +108,38 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
         btnIniciar.setOnClickListener {
             isSaving = true
             System.out.println("listo para guardar locaciones en la DB")
-            Toast.makeText(this, "Base de datos ABIERta", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Base de datos abierta", Toast.LENGTH_SHORT).show()
         }
 
         //Borra la base de datos
         btnBorrar.setOnClickListener{
+            this.mapa?.clear()
             var customSQL = CustomSQL(this,"myDB", null, 1)
             customSQL.eliminar("myDB")
-        }
+            }
 
+        //Dibuja y desdibuja marcadores
         btnDibujar.setOnClickListener{
             var customSQL = CustomSQL(this,"myDB", null, 1)
             var ubicaciondb = customSQL.getUbicaciones(latitud,longitud)
-
             //si isShowing (seteado en creacion de marcadores) es verdadero, limpia los markers
             if (this.isShowing) {
                 mapa?.clear()
                 Toast.makeText(this, "Eliminando marcadores", Toast.LENGTH_LONG).show()
             }
-            else
-            {
+            else if (this.isShowing && ubicaciondb.size==0){
+            customSQL.eliminarMarcadores (latitud,longitud)
+            Toast.makeText(this, "no borra x no existe", Toast.LENGTH_LONG).show()
+            }
+            else {
                 Toast.makeText(this, "Leyendo database", Toast.LENGTH_LONG).show()
-
-                for(i in ubicaciondb) {
+                for (i in ubicaciondb) {
                     System.out.println(i)
                     mapa?.addMarker(MarkerOptions().position(i).visible(true))
-
                 }
             }
-
-            //al finalizar, deja isShowing en false. asi cuando se vuevla a presionar
-            //DIBUJAR, la app lee de la DB las locaciones y las vuelve a ubicar
             this.isShowing = !this.isShowing
         }
-
     }
 
     override fun onLocationChanged(location: Location?) {

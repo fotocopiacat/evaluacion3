@@ -68,21 +68,15 @@ class CustomSQL (val miContexto: Context,
         }
     }
 
-    fun leerDB(latitud: String, longitud: String, nombreDb: String, cursor: Cursor) {
-        val db = this.writableDatabase
-        var query = "SELECT * FROM nombreDb"
-        db?.execSQL(query)
-    }
-
-    fun getUbicaciones(latitudD: Double, longitudD: Double): ArrayList<LatLng> {
+    fun eliminarMarcadores (latitudD: Double, longitudD: Double): ArrayList<LatLng> {
         var ubicacionesList = ArrayList<LatLng>()
-        // Select All Query
-        val selectQuery = "SELECT * FROM Ubicaciones"
-
+        // Selecciona lo que hay en la tabla Ubicaciones con un query
+        val query = "SELECT * FROM Ubicaciones"
         val db = this.writableDatabase
-        val cursor = db.rawQuery(selectQuery, null)
+        val cursor = db.rawQuery(query, null)
 
-        // looping through all rows and adding to list
+        // Se hace cursor q viaja por todos los datos de la tabla Ubicaciones
+        // y guarda latitud y longiud
         if (cursor.moveToFirst()) {
             do {
                 val lat= cursor.getDouble(0)
@@ -90,7 +84,28 @@ class CustomSQL (val miContexto: Context,
                 ubicacionesList.add(LatLng(latitudD,longitudD))
             } while (cursor.moveToNext())
         }
-        // return Translate list
+        if (ubicacionesList.size == 0) {
+            Toast.makeText(miContexto, "No se elimina markers porque DB no existe", Toast.LENGTH_LONG).show()
+        }
+        return ubicacionesList
+    }
+
+    fun getUbicaciones(latitudD: Double, longitudD: Double): ArrayList<LatLng> {
+        var ubicacionesList = ArrayList<LatLng>()
+        // Selecciona lo que hay en la tabla Ubicaciones con un query
+        val query = "SELECT * FROM Ubicaciones"
+        val db = this.writableDatabase
+        val cursor = db.rawQuery(query, null)
+
+        // Se hace cursor q viaja por todos los datos de la tabla Ubicaciones
+        // y guarda latitud y longiud
+        if (cursor.moveToFirst()) {
+            do {
+                val lat= cursor.getDouble(0)
+                val lng = cursor.getDouble(1)
+                ubicacionesList.add(LatLng(latitudD,longitudD))
+            } while (cursor.moveToNext())
+        }
         return ubicacionesList
     }
 }
