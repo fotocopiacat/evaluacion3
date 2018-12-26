@@ -96,6 +96,9 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
         fragmentoMapa.getMapAsync(this)
 
         btnDibujar.setOnClickListener{
+            var customSQL = CustomSQL(this,"myDB", null, 1)
+            var ubicaciondb = customSQL.getUbicaciones(latitud,longitud)
+
             //si isShowing (seteado en creacion de marcadores) es verdadero, limpia los markers
             if (this.isShowing) {
                 mapa?.clear()
@@ -103,10 +106,10 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
             } else
             {
                 Toast.makeText(this, "Leyendo database", Toast.LENGTH_LONG).show()
-                var customSQL = CustomSQL(this,"myDB", null, 1)
-                var ubicaciondb = customSQL.getUbicaciones(latitud,longitud)
-                mapa?.addMarker(MarkerOptions().position(ubicaciondb))
-                this.isShowing
+                for(i in ubicaciondb) {
+                    mapa?.addMarker(MarkerOptions().position(i))
+                }
+                this.isShowing = true
             }
             //al finalizar, deja isShowing en false. asi cuando se vuevla a presionar
             //DIBUJAR, la app lee de la DB las locaciones y las vuelve a ubicar

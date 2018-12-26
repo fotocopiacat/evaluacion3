@@ -74,8 +74,8 @@ class CustomSQL (val miContexto: Context,
         db?.execSQL(query)
     }
 
-    fun getUbicaciones(latitudD: Double, longitudD: Double): LatLng {
-        var ubicacionesList = LatLng(latitudD,longitudD)
+    fun getUbicaciones(latitudD: Double, longitudD: Double): ArrayList<LatLng> {
+        var ubicacionesList = ArrayList<LatLng>()
         // Select All Query
         val selectQuery = "SELECT * FROM Ubicaciones"
 
@@ -87,7 +87,7 @@ class CustomSQL (val miContexto: Context,
             do {
                 val lat= cursor.getDouble(0)
                 val lng = cursor.getDouble(1)
-                ubicacionesList = LatLng(latitudD,longitudD)
+                ubicacionesList.add(LatLng(latitudD,longitudD))
             } while (cursor.moveToNext())
         }
         // return Translate list
