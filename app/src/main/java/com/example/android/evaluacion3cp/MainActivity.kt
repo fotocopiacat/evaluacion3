@@ -58,10 +58,6 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
         else {
             p0?.isMyLocationEnabled = true
         }
-
-
-
-
     }
 
     //Se declara un Location Manager
@@ -130,14 +126,16 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
                 Toast.makeText(this, "Eliminando marcadores", Toast.LENGTH_LONG).show()
             }
             else if (!this.isShowing && ubicaciondb.size==0){
-                Toast.makeText(this, "no borra x no existe", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "No se borra marcadores porque DB no existe", Toast.LENGTH_LONG).show()
             }
             else {
                 Toast.makeText(this, "Leyendo database", Toast.LENGTH_LONG).show()
                 for (i in ubicaciondb) {
-                    System.out.println(i)
-                    //Esto deberia cre
+                    //Esto deberia crear los marcadores leyendolos desde la DB, ya que itera sobre todos los datos,
+                    //pero solo crea el ultimo
                     mapa?.addMarker(MarkerOptions().position(i).visible(true))
+                    //Imprime en consola todas las ubicaciones. Lo hice para saber si estaba iterando correctamente
+                    System.out.println(i)
                 }
             }
             this.isShowing = !this.isShowing

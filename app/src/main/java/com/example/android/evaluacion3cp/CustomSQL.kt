@@ -38,7 +38,7 @@ class CustomSQL (val miContexto: Context,
             db.close()
             if (resultado == 1L) {
                 System.out.println("mensaje no agregado")
-                Toast.makeText(miContexto, "Latitud y longitud NO agregados a la DB", Toast.LENGTH_SHORT).show()
+                Toast.makeText(miContexto, "Latitud y longitud SÍ agregados a la DB", Toast.LENGTH_SHORT).show()
 
             }
             else {
