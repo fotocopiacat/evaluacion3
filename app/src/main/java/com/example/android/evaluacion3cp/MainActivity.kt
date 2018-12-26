@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.ContentValues
 import android.content.Context
 import android.content.pm.PackageManager
+import android.database.sqlite.SQLiteDatabase
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationListener
@@ -33,11 +34,11 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
     var altitud = 0.0
     var lm : LocationManager? = null
     var isSaving : Boolean = true
-    var isShowing : Boolean = true
 
 
     override fun onMapReady(p0: GoogleMap?) {
         mapa = p0
+
 
         //se revisa nuevamente si los permisos fueron otorgados
         val permisos = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -94,24 +95,27 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
         // sobreescribir, deja de suceder
         fragmentoMapa.getMapAsync(this)
 
-       // isShowing = true
-
         btnDibujar.setOnClickListener{
-            isShowing = !isShowing
-
+            mapa!!.clear()
         }
 
-
         btnDetener.setOnClickListener{
-         //   var customSQL = CustomSQL(this,"myDB", null, 1)
-         //   customSQL.close()
-           System.out.println("base cerrada")
             isSaving = false
+            Toast.makeText(this, "Base de datos cerrada", Toast.LENGTH_SHORT).show()
         }
 
         btnIniciar.setOnClickListener {
             isSaving = true
+            System.out.println("listo para guardar locaciones en la DB")
+            Toast.makeText(this, "Base de datos ABIERta", Toast.LENGTH_SHORT).show()
+
         }
+
+        btnBorrar.setOnClickListener{
+            var customSQL = CustomSQL(this,"myDB", null, 1)
+         //   customSQL.eliminar("myDB")
+        }
+
     }
 
     override fun onLocationChanged(location: Location?) {
@@ -124,19 +128,13 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
         var lat = latitud.toString()
         var long = longitud.toString()
 
-
         if (isSaving == true) {
-           var marcador = LatLng(latitud,longitud)
-            mapa?.addMarker(MarkerOptions()
-                .position(marcador)
-                .visible(isShowing))
+          var marcador = LatLng(latitud,longitud)
+            mapa?.addMarker(MarkerOptions().position(marcador))
             var customSQL = CustomSQL(this,"myDB", null, 1)
             customSQL.insertar(lat,long)
         }
-
-
      }
-
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when (requestCode)
@@ -161,7 +159,6 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
     }
 
     override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-
     }
 
     override fun onProviderEnabled(provider: String?) {
