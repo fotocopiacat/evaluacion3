@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
 
     }
 
-    //se declara un location manager
+    //Se declara un Location Manager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -102,28 +102,30 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
                 Toast.makeText(this, "Eliminando marcadores", Toast.LENGTH_LONG).show()
             } else
             {
+                var customSQL = CustomSQL(this,"myDB", null, 1)
+           //     var ubicaciondb = customSQL.getUbicaciones()
                 Toast.makeText(this, "leer database", Toast.LENGTH_LONG).show()
-                }
+            }
             //al finalizar, deja isShowing en false. asi cuando se vuevla a presionar
             //DIBUJAR, la app lee de la DB las locaciones y las vuelve a ubicar
             this.isShowing = !this.isShowing
             }
 
 
-        //detiene la inserción de datos en la DB
+        //Detiene la inserción de datos en la DB
         btnDetener.setOnClickListener{
             isSaving = false
             Toast.makeText(this, "Base de datos cerrada", Toast.LENGTH_SHORT).show()
         }
 
-        //abre la conexión con la DB en caso de estar cerrada o detenida
+        //Abre la conexión con la DB en caso de estar cerrada o detenida
         btnIniciar.setOnClickListener {
             isSaving = true
             System.out.println("listo para guardar locaciones en la DB")
             Toast.makeText(this, "Base de datos ABIERta", Toast.LENGTH_SHORT).show()
         }
 
-        //borra la base de datos
+        //Borra la base de datos
         btnBorrar.setOnClickListener{
             var customSQL = CustomSQL(this,"myDB", null, 1)
             customSQL.eliminar("myDB")
@@ -132,7 +134,7 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
     }
 
     override fun onLocationChanged(location: Location?) {
-        //se indica que las variables latitd y longitud obtienen sus valores de la locacion
+        //Se indica que las variables latitd y longitud obtienen sus valores de la locacion
         //obtenida por el servicio de ubicacion
         latitud = location?.latitude.toString().toDouble()
         longitud = location?.longitude.toString().toDouble()
@@ -146,7 +148,10 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
             mapa?.addMarker(MarkerOptions().position(marcador))
             var customSQL = CustomSQL(this,"myDB", null, 1)
             customSQL.insertar(lat,long)
+            var ubicaciondb = customSQL.getUbicaciones(latitud,longitud)
             isShowing = true
+
+
         }
      }
 

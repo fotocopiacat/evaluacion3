@@ -2,6 +2,7 @@ package com.example.android.evaluacion3cp
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.os.Environment
@@ -25,7 +26,7 @@ class CustomSQL (val miContexto: Context,
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
     }
 
-    //se crea una funcion que intentara escribir en la base de datos
+    //Se crea una funcion que intentara escribir en la base de datos
     fun insertar(latitud: String, longitud : String) {
         try {
             val db = this.writableDatabase
@@ -51,6 +52,7 @@ class CustomSQL (val miContexto: Context,
         }
     }
 
+    //Función para eliminar DB
     fun eliminar(nombreDb: String) {
         val database = miContexto.getDatabasePath(nombreDb)
         //chequeo si la DB existe y si existe la elimina, si no existe, no la elimina.
@@ -60,8 +62,35 @@ class CustomSQL (val miContexto: Context,
             miContexto.deleteDatabase(nombreDb)
             Toast.makeText(miContexto, "DB eliminada", Toast.LENGTH_LONG).show()
         } else {
-            //luego de borrarla, al apretar de nuevo el boton BORRAR, sale esto.
+            //Luego de borrarla, al apretar de nuevo el boton BORRAR, sale esto.
             Toast.makeText(miContexto, "Error al eliminar BD", Toast.LENGTH_LONG).show()
         }
+    }
+
+    fun leerDB(latitud: String, longitud: String, nombreDb: String, cursor: Cursor) {
+        val db = this.writableDatabase
+        var query = "SELECT * FROM nombreDb"
+        db?.execSQL(query)
+    }
+
+    fun getUbicaciones(latitudD: Double, longitudD: Double): List<Ubicacion> {
+        val ubicacionesList = ArrayList<Ubicacion>()
+        // Select All Query
+        val selectQuery = "SELECT * FROM Ubicaciones"
+
+        val db = this.writableDatabase
+        val cursor = db.rawQuery(selectQuery, null)
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                val ubicacionLatLang = Ubicacion(latitudD, longitudD);
+                val lat= cursor.getDouble(0)
+                val lng = cursor.getDouble(1)
+            } while (cursor.moveToNext())
+        }
+
+        // return Translate list
+        return ubicacionesList
     }
 }
