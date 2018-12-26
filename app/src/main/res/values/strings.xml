@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Evaluacion3CP</string>
+    <string name="btn0">Start</string>
+    <string name="btn1">Stop</string>
+    <string name="btn2">Dibuja</string>
+    <string name="btn3">Borra DB</string>
+
 </resources>
