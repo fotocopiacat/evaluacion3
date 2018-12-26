@@ -52,12 +52,15 @@ class CustomSQL (val miContexto: Context,
     }
 
     fun eliminar(nombreDb: String) {
-        var db = this.writableDatabase
-        val file = miContexto.getFileStreamPath(nombreDb)
-        if (file.exists()) {
+        val database = miContexto.getDatabasePath(nombreDb)
+        //chequeo si la DB existe y si existe la elimina, si no existe, no la elimina.
+        //ojo que aqui el archivo DB sigue apareciendo en data/data/paquete/databases,
+        //pero si intento copiarla en mi escritorio, me dice que no pudo porque "No such file or directory"
+        if (database.exists()) {
             miContexto.deleteDatabase(nombreDb)
             Toast.makeText(miContexto, "DB eliminada", Toast.LENGTH_LONG).show()
         } else {
+            //luego de borrarla, al apretar de nuevo el boton BORRAR, sale esto.
             Toast.makeText(miContexto, "Error al eliminar BD", Toast.LENGTH_LONG).show()
         }
     }
