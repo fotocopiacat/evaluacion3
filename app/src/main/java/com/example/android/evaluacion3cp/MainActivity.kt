@@ -109,7 +109,6 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
                 for(i in ubicaciondb) {
                     mapa?.addMarker(MarkerOptions().position(i))
                 }
-                this.isShowing = true
             }
             //al finalizar, deja isShowing en false. asi cuando se vuevla a presionar
             //DIBUJAR, la app lee de la DB las locaciones y las vuelve a ubicar
