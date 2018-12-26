@@ -33,9 +33,11 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
     var longitud = 0.0
     var altitud = 0.0
     var lm : LocationManager? = null
-    //este boolean sirve para saber si la DB está guardando datos o no.
+    //Este boolean sirve para saber si la DB está guardando datos o no.
     //lo uso para abrir o cerrar la conexión con la DB
     var isSaving : Boolean = true
+    //Este boolean lo uso para saber si se están mostrando los marcadores o no,
+    //así puedo limpiarlos o leerlos de la DB.
     var isShowing : Boolean = true
 
 
@@ -64,14 +66,14 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //se inicializa el location manager
+        //Se inicializa el location manager
         lm = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
-        //el fragmento mapa necesita un callback q haremos ahora
+        //El fragmento mapa necesita un callback q haremos ahora
         val fragmentoMapaCB = supportFragmentManager.findFragmentById(R.id.FragmentMapa) as SupportMapFragment
         fragmentoMapaCB.getMapAsync(this)
 
-        //el gps es un permiso importante entonces debe salir un popup que le indique al usuario
+        //El gps es un permiso importante entonces debe salir un popup que le indique al usuario
         //sobre el uso del GPS
         val permisos = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
         var granted = true
@@ -89,11 +91,12 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
 
         //fragmento mapa
         val fragmentoMapa = supportFragmentManager.findFragmentById(R.id.FragmentMapa) as SupportMapFragment
-        //antes decia THIS con rojo, pro al anadir el listner de mapa (ultimo metodo de main activity_) y
-        // sobreescribir, deja de suceder
+        //Antes decia THIS con rojo, pero al anadir el listner de mapa (ultimo metodo de Main Activity) y
+        //sobreescribir, deja de suceder
         fragmentoMapa.getMapAsync(this)
 
         btnDibujar.setOnClickListener{
+            //si isShowing (seteado en creacion de marcadores) es verdadero, limpia los markers
             if (this.isShowing) {
                 mapa?.clear()
                 Toast.makeText(this, "Eliminando marcadores", Toast.LENGTH_LONG).show()
@@ -101,6 +104,8 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
             {
                 Toast.makeText(this, "leer database", Toast.LENGTH_LONG).show()
                 }
+            //al finalizar, deja isShowing en false. asi cuando se vuevla a presionar
+            //DIBUJAR, la app lee de la DB las locaciones y las vuelve a ubicar
             this.isShowing = !this.isShowing
             }
 
