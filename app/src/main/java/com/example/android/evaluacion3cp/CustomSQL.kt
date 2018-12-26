@@ -90,7 +90,6 @@ class CustomSQL (val miContexto: Context,
                 ubicacionesList = LatLng(latitudD,longitudD)
             } while (cursor.moveToNext())
         }
-
         // return Translate list
         return ubicacionesList
     }
