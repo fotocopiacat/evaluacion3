@@ -68,7 +68,7 @@ class CustomSQL (val miContexto: Context,
         }
     }
 
-    fun eliminarMarcadores (latitudD: Double, longitudD: Double): ArrayList<LatLng> {
+/*    fun eliminarMarcadores (latitudD: Double, longitudD: Double): ArrayList<LatLng> {
         var ubicacionesList = ArrayList<LatLng>()
         // Selecciona lo que hay en la tabla Ubicaciones con un query
         val query = "SELECT * FROM Ubicaciones"
@@ -88,7 +88,7 @@ class CustomSQL (val miContexto: Context,
             Toast.makeText(miContexto, "No se elimina markers porque DB no existe", Toast.LENGTH_LONG).show()
         }
         return ubicacionesList
-    }
+    }*/
 
     fun getUbicaciones(latitudD: Double, longitudD: Double): ArrayList<LatLng> {
         var ubicacionesList = ArrayList<LatLng>()

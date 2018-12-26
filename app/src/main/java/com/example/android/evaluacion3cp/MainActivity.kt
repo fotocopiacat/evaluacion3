@@ -116,6 +116,8 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
             this.mapa?.clear()
             var customSQL = CustomSQL(this,"myDB", null, 1)
             customSQL.eliminar("myDB")
+            isShowing = false
+
             }
 
         //Dibuja y desdibuja marcadores
@@ -127,14 +129,14 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
                 mapa?.clear()
                 Toast.makeText(this, "Eliminando marcadores", Toast.LENGTH_LONG).show()
             }
-            else if (this.isShowing && ubicaciondb.size==0){
-            customSQL.eliminarMarcadores (latitud,longitud)
-            Toast.makeText(this, "no borra x no existe", Toast.LENGTH_LONG).show()
+            else if (!this.isShowing && ubicaciondb.size==0){
+                Toast.makeText(this, "no borra x no existe", Toast.LENGTH_LONG).show()
             }
             else {
                 Toast.makeText(this, "Leyendo database", Toast.LENGTH_LONG).show()
                 for (i in ubicaciondb) {
                     System.out.println(i)
+                    //Esto deberia cre
                     mapa?.addMarker(MarkerOptions().position(i).visible(true))
                 }
             }
