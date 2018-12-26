@@ -4,7 +4,9 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.os.Environment
 import android.widget.Toast
+import java.io.File
 import java.sql.SQLException
 
 class CustomSQL (val miContexto: Context,
@@ -49,8 +51,21 @@ class CustomSQL (val miContexto: Context,
         }
     }
 
-  //  fun eliminar(nombreDb: String) {
-      //  val db = this.writableDatabase
-     //   miContexto.deleteDatabase(nombreDb)
-  //  }
+    fun eliminar(nombreDb: String) {
+   //     var db = this.writableDatabase
+        var fileName = nombreDb
+        val sdDir = Environment.getExternalStorageDirectory()
+        var file = File(fileName)
+       // var fileExists = file.exists()
+        if (file.isFile) {
+            miContexto.deleteDatabase(nombreDb)
+            Toast.makeText(miContexto, "DB eliminada", Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(miContexto, "Error al eliminar BD", Toast.LENGTH_LONG).show()
+
+        }
+
+       // var query = "DROP DATABASE $nombreDb IF EXISTS"
+       // db?.execSQL(query)
+    }
 }

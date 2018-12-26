@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var customSQL = CustomSQL(this,"myDB", null, 1)
+      //  var customSQL = CustomSQL(this,"myDB", null, 1)
 
 
         //se inicializa el location manager
@@ -113,7 +113,7 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
 
         btnBorrar.setOnClickListener{
             var customSQL = CustomSQL(this,"myDB", null, 1)
-         //   customSQL.eliminar("myDB")
+            customSQL.eliminar("myDB")
         }
 
     }
