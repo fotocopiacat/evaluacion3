@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
     //este boolean sirve para saber si la DB está guardando datos o no.
     //lo uso para abrir o cerrar la conexión con la DB
     var isSaving : Boolean = true
+    var isShowing : Boolean = true
 
 
     override fun onMapReady(p0: GoogleMap?) {
@@ -55,6 +56,7 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
         else {
             p0?.isMyLocationEnabled = true
         }
+
     }
 
     //se declara un location manager
@@ -92,8 +94,16 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
         fragmentoMapa.getMapAsync(this)
 
         btnDibujar.setOnClickListener{
-            mapa!!.clear()
-        }
+            if (this.isShowing) {
+                mapa?.clear()
+                Toast.makeText(this, "Eliminando marcadores", Toast.LENGTH_LONG).show()
+            } else
+            {
+                Toast.makeText(this, "leer database", Toast.LENGTH_LONG).show()
+                }
+            this.isShowing = !this.isShowing
+            }
+
 
         //detiene la inserción de datos en la DB
         btnDetener.setOnClickListener{
@@ -127,10 +137,11 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
         var long = longitud.toString()
 
         if (isSaving == true) {
-          var marcador = LatLng(latitud,longitud)
+            var marcador = LatLng(latitud,longitud)
             mapa?.addMarker(MarkerOptions().position(marcador))
             var customSQL = CustomSQL(this,"myDB", null, 1)
             customSQL.insertar(lat,long)
+            isShowing = true
         }
      }
 
