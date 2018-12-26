@@ -19,6 +19,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
@@ -155,6 +156,8 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
         if (isSaving == true) {
             var marcador = LatLng(latitud,longitud)
             mapa?.addMarker(MarkerOptions().position(marcador))
+            var zoom : Float = 1500f
+            mapa?.moveCamera(CameraUpdateFactory.newLatLngZoom(marcador,zoom));
             var customSQL = CustomSQL(this,"myDB", null, 1)
             customSQL.insertar(lat,long)
         }
