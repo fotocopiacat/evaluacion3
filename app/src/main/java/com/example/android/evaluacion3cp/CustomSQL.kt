@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.os.Environment
 import android.widget.Toast
+import com.google.android.gms.maps.model.LatLng
 import java.io.File
 import java.sql.SQLException
 
@@ -73,8 +74,8 @@ class CustomSQL (val miContexto: Context,
         db?.execSQL(query)
     }
 
-    fun getUbicaciones(latitudD: Double, longitudD: Double): List<Ubicacion> {
-        val ubicacionesList = ArrayList<Ubicacion>()
+    fun getUbicaciones(latitudD: Double, longitudD: Double): LatLng {
+        var ubicacionesList = LatLng(latitudD,longitudD)
         // Select All Query
         val selectQuery = "SELECT * FROM Ubicaciones"
 
@@ -84,9 +85,9 @@ class CustomSQL (val miContexto: Context,
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                val ubicacionLatLang = Ubicacion(latitudD, longitudD);
                 val lat= cursor.getDouble(0)
                 val lng = cursor.getDouble(1)
+                ubicacionesList = LatLng(latitudD,longitudD)
             } while (cursor.moveToNext())
         }
 

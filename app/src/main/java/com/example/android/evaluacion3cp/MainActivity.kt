@@ -102,9 +102,11 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
                 Toast.makeText(this, "Eliminando marcadores", Toast.LENGTH_LONG).show()
             } else
             {
+                Toast.makeText(this, "Leyendo database", Toast.LENGTH_LONG).show()
                 var customSQL = CustomSQL(this,"myDB", null, 1)
-           //     var ubicaciondb = customSQL.getUbicaciones()
-                Toast.makeText(this, "leer database", Toast.LENGTH_LONG).show()
+                var ubicaciondb = customSQL.getUbicaciones(latitud,longitud)
+                mapa?.addMarker(MarkerOptions().position(ubicaciondb))
+                this.isShowing
             }
             //al finalizar, deja isShowing en false. asi cuando se vuevla a presionar
             //DIBUJAR, la app lee de la DB las locaciones y las vuelve a ubicar
@@ -148,10 +150,7 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
             mapa?.addMarker(MarkerOptions().position(marcador))
             var customSQL = CustomSQL(this,"myDB", null, 1)
             customSQL.insertar(lat,long)
-            var ubicaciondb = customSQL.getUbicaciones(latitud,longitud)
             isShowing = true
-
-
         }
      }
 
@@ -188,6 +187,7 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
         //se deja vacio
     }
 }
+
 
 
 
