@@ -33,13 +33,13 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
     var longitud = 0.0
     var altitud = 0.0
     var lm : LocationManager? = null
+    //este boolean sirve para saber si la DB está guardando datos o no.
+    //lo uso para abrir o cerrar la conexión con la DB
     var isSaving : Boolean = true
 
 
     override fun onMapReady(p0: GoogleMap?) {
         mapa = p0
-
-
         //se revisa nuevamente si los permisos fueron otorgados
         val permisos = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION)
         var granted = true
@@ -58,13 +58,9 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
     }
 
     //se declara un location manager
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-      //  var customSQL = CustomSQL(this,"myDB", null, 1)
-
 
         //se inicializa el location manager
         lm = getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -99,18 +95,20 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
             mapa!!.clear()
         }
 
+        //detiene la inserción de datos en la DB
         btnDetener.setOnClickListener{
             isSaving = false
             Toast.makeText(this, "Base de datos cerrada", Toast.LENGTH_SHORT).show()
         }
 
+        //abre la conexión con la DB en caso de estar cerrada o detenida
         btnIniciar.setOnClickListener {
             isSaving = true
             System.out.println("listo para guardar locaciones en la DB")
             Toast.makeText(this, "Base de datos ABIERta", Toast.LENGTH_SHORT).show()
-
         }
 
+        //borra la base de datos
         btnBorrar.setOnClickListener{
             var customSQL = CustomSQL(this,"myDB", null, 1)
             customSQL.eliminar("myDB")
@@ -152,7 +150,7 @@ class MainActivity : AppCompatActivity(),LocationListener, OnMapReadyCallback {
                     lm?.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,1f,this)
                 } else
                 {
-                    Toast.makeText(this, " permiso de gps requerido", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Permiso de gps requerido", Toast.LENGTH_LONG).show()
                 }
             }
         }
